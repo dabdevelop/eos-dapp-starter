@@ -1,5 +1,5 @@
 /* jshint esversion: 6 */ 
-var ENV = 'mainnet';
+var ENV = 'dev';
 var network;
 var options;
 
@@ -60,9 +60,10 @@ function setENV(env){
 export default {
     appName: "eos dapp",
     mainToken: "EOS", // 主网代币，永远是EOS, 不会变
-    tokenName: "CGT", // 游戏代币，游戏盘是 ITE， EOS盘是EOS
+    gameToken: "CGT", // 游戏代币，游戏盘是 CGT， EOS盘是EOS
     tokenContract: "eosio.token",
-    gameContract: "oneplayeriss",
+    gameTokenContract: "playeroneiss",
+    gameContract: "oneplayerone",
     
     version: "1.0",
     env: ENV,

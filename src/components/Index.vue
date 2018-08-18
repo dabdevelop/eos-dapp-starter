@@ -4,8 +4,14 @@
         <el-row>
           <el-button @click.prevent="login" type="primary" round>login</el-button>
           <el-button @click.prevent="logout" type="danger" round>logout</el-button>
+          <el-button @click.prevent="buy" type="primary" round>buy</el-button>
+          <el-button @click.prevent="sell" type="danger" round>sell</el-button>
+          <el-button @click.prevent="burn" type="danger" round>burn</el-button>
+          <el-button @click.prevent="deposit" type="danger" round>deposit</el-button>
+          <el-button @click.prevent="stake" type="danger" round>stake</el-button>
+          <el-button @click.prevent="unstake" type="danger" round>unstake</el-button>
+          <el-button @click.prevent="collect_fee" type="danger" round>collect fee</el-button>
           <el-button @click.prevent="get_height" type="success" round>{{ block_height }}</el-button>
-          
         </el-row>
       </div>
   </div>
@@ -66,6 +72,164 @@ methods: {
             this.block_height = result.head_block_num;
           }
         })
+      },
+      buy() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "100.0000 " + config.mainToken;
+				var memo = "";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.tokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			sell() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "200.0000 " + config.gameToken; 
+				var memo = "";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.gameTokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			// 销毁操作
+			burn() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "1000.0000 " + config.gameToken; 
+				var memo = "burn";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.gameTokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			deposit() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "100.0000 " + config.mainToken;
+				var memo = "deposit";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.tokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			stake() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "200.0000 " + config.gameToken; 
+				var memo = "stake";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.gameTokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			unstake() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "0.0002 " + config.mainToken;
+				var memo = "";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.tokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			collect_fee() {
+				const requiredFields = {
+					accounts: [config.eosNetwork]
+				}
+				// hard code
+				var from = this.account.name;
+				var to = config.gameContract;
+				var amount = "0.0001 " + config.mainToken;
+				var memo = "";
+				var arg = [from, to, amount, memo]
+				this.scatterEosClient.contract(config.tokenContract, { requiredFields }).then(contract => {
+					contract.transfer(...arg).then(tx => {
+						console.log(tx)
+					}).catch(e => {
+						console.log(e)
+					})
+				}).catch(e => {
+					console.log(e)
+				});
+			},
+			get_global() {
+				this.eosClient.getTableRows({
+					json: "true",
+					code: config.gameContract,
+					scope: config.gameContract,
+					table: 'game',
+					limit: 1,
+					lower_bound: 0
+				}).then((data) => {
+					console.log(data);
+					if (data.rows && data.rows.length > 0) {
+						this.global = data.rows[0];
+					}
+				}).catch((e) => {
+					console.error(e);
+				})
 			},
 },
   props: {
